@@ -113,3 +113,121 @@ describe("isFullBoard", function(){
 	});
 
 });
+
+
+
+describe("getEmptySquares", function(){
+	it("should return the correct empty squares", function(){
+		let board = [
+			[null, null, null],
+			[null, null, null],
+			[null, null, null],
+		];
+
+		let emptySquaresCollection = [
+			[0,0],[0,1],[0,2],
+			[1,0],[1,1],[1,2],
+			[2,0],[2,1],[2,2],
+		];
+	
+		expect(getEmptySquares(board)).toEqual(emptySquaresCollection);
+	});
+
+	it("should return the correct empty squares", function(){
+		let board = [
+			['X', null, null],
+			[null, 'O', null],
+			[null, null, 'X'],
+		];
+
+		let emptySquaresCollection = [
+			[0,1],[0,2],
+			[1,0],[1,2],
+			[2,0],[2,1],
+		];
+	
+		expect(getEmptySquares(board)).toEqual(emptySquaresCollection);
+	});	
+
+	it("should return the correct empty squares", function(){
+		let board = [
+			['X', 'O', 'X'],
+			['X', 'O', null],
+			['O', 'X', 'X'],
+		];
+
+		let emptySquaresCollection = [
+			[1,2],
+		];
+	
+		expect(getEmptySquares(board)).toEqual(emptySquaresCollection);
+	});	
+
+	it("should return the correct empty squares", function(){
+		let board = [
+			['X', 'O', 'X'],
+			['X', 'O', 'X'],
+			['O', 'X', 'X'],
+		];
+
+		let emptySquaresCollection = [];
+	
+		expect(getEmptySquares(board)).toEqual(emptySquaresCollection);
+	});			
+});
+
+
+
+
+describe("generateRandomMove", function(){
+	it("should return an open space", function(){
+		let board = [
+			[null, null, null],
+			[null, null, null],
+			[null, null, null],
+		];
+
+		let randomMove = generateRandomMove(board);
+	
+		expect(randomMove[0] >= 0 && randomMove[0] <= 2 && randomMove[1] >= 0 && randomMove[0] <= 2).toBeTruthy();
+	});
+
+	it("should return an open space", function(){
+		let board = [
+			[null, null, null],
+			['X', 'O', 'X'],
+			['O', 'X', 'O'],
+		];
+
+		let randomMove = generateRandomMove(board);
+	
+		expect(randomMove[0] === 0 && randomMove[1] >= 0 && randomMove[0] <= 2).toBeTruthy();
+	});	
+
+	it("should return an open space", function(){
+		let board = [
+			[null, 'X', 'O'],
+			['X', 'O', 'X'],
+			['O', 'X', 'O'],
+		];
+
+		let expectedMove = [0,0];
+	
+		expect(generateRandomMove(board)).toEqual(expectedMove);
+
+	});	
+
+	it("should return an open space", function(){
+		let board = [
+			['O', 'X', 'O'],
+			['X', 'O', 'X'],
+			['O', 'X', 'O'],
+		];
+
+		let expectedMove = null;
+	
+		expect(generateRandomMove(board)).toEqual(expectedMove);
+
+	});		
+
+});

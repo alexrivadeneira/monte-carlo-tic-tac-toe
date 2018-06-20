@@ -21,6 +21,10 @@ function returnWinner(board){
     if(board[0][2] === board[1][1] && board[0][2] === board[2][0]){
         return board[0][2];
     }
+
+    if(isFullBoard(board)){
+        return 'tie';
+    }
     
     return null;
 }
@@ -40,24 +44,39 @@ function isFullBoard(board){
     return true;
 }
 
-
-function makeRandomMove(board, player){
-    let rows = board.length;
-    let randomRow = Math.floor(Math.random() * rows);
-    let randomCol = Math.floor(Math.random() * rows);
-
-    while(board[randomRow][randomCol] !== null){
-        let randomRow = Math.floor(Math.random() * rows);
-        let randomCol = Math.floor(Math.random() * rows);        
+function getEmptySquares(board){
+    let emptySquares = [];
+    for(let i = 0; i < board.length; i++){
+        for(let j = 0; j < board[0].length; j++){
+            if(board[i][j] === null){
+                emptySquares.push([i, j]);
+            }
+        }
     }
-    return [randomRow, randomCol];
+    return emptySquares;
+}
+
+
+function generateRandomMove(board){
+    let emptySquares = getEmptySquares(board);
+    console.log('emptySquares', emptySquares);
+
+    if(emptySquares.length === 0){
+        return null;
+    }
+    return emptySquares[Math.floor(Math.random() * emptySquares.length)];
+}
+
+function makeMove(board, player, row, col){
+    board[row][col] = player;
 }
 
 
 function playUntilWin(board, startPlayer){
     // TODO: Need to account for tie
     while(returnWinner(board) === null){
-        makeRandomMove(board, startPlayer);
+        let randomMove = generateRandomMove(board);
+        makeMove(board, startPlayer, randomMove[0], randomMove[1]);
         if(startPlayer === 'X'){
             startPlayer = 'O';
         } else {
@@ -74,6 +93,14 @@ function scoreBoard(player, board){
     // for each game that results in a win for the player, add 1 to the scored section
     // for each game that results in a lose for the player, add -1 to the square
 }
+
+let board = [
+    [null, null, null],
+    [null, null, null],
+    [null, null, null],
+];
+
+// playUntilWin(board, 'X');
 
 
 
