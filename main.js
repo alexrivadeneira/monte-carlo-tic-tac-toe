@@ -32,13 +32,28 @@ function returnWinner(board){
     return null;
 }
 
+function fullBoard(board){
+    let nullCount = 0;
+    for(let i = 0; i < board.length; i++){
+        for(let j = 0; j < board.length; j++){
+            if(board[i][j] === null){
+                nullCount++;
+            }
+        }
+    }
+    if(nullCount > 0){
+        return false;
+    }
+    return true;
+}
+
 let board1 = [
     ['X', 'X', 'X'],
     ['null', 'O', 'O'],
     ['O', null, null],
 ];
 
-console.log('X', returnWinner(board1));
+// console.log('X', returnWinner(board1));
 
 let board2 = [
     ['X', 'X', 'O'],
@@ -46,7 +61,7 @@ let board2 = [
     ['O', null, 'X'],
 ];
 
-console.log('X', returnWinner(board2));
+// console.log('X', returnWinner(board2));
 
 let board3 = [
     ['O', 'X', 'O'],
@@ -54,7 +69,7 @@ let board3 = [
     ['O', null, 'X'],
 ];
 
-console.log('O', returnWinner(board3));
+// console.log('O', returnWinner(board3));
 
 let board4 = [
     ['null', 'X', 'O'],
@@ -62,7 +77,7 @@ let board4 = [
     ['O', null, 'X'],
 ];
 
-console.log(null, returnWinner(board4));
+// console.log(null, returnWinner(board4));
 
 let board5 = [
     ['null', 'X', 'O'],
@@ -82,10 +97,24 @@ function makeRandomMove(board, player){
     return [randomRow, randomCol];
 }
 
-console.log(makeRandomMove(board, 'X'));
+// console.log(makeRandomMove(board, 'X'));
 
-function chooseNextMove(player, board){
+// function chooseNextMove(player, board){
 
+// }
+
+function playUntilWin(board, startPlayer){
+    // TODO: Need to account for tie
+    while(returnWinner(board) === null){
+        makeRandomMove(board, startPlayer);
+        if(startPlayer === 'X'){
+            startPlayer = 'O';
+        } else {
+            startPlayer = 'X';
+        }
+        console.log('currBoard: ', board);
+    }
+    console.log('WINNER: ', returnWinner(board));
 }
 
 function scoreBoard(player, board){
@@ -94,3 +123,27 @@ function scoreBoard(player, board){
     // for each game that results in a win for the player, add 1 to the scored section
     // for each game that results in a lose for the player, add -1 to the square
 }
+
+
+let testPlayBoard = [
+    ['X', null, 'O'],
+    [null, null, null],
+    ['O', null, null],
+];
+
+let testPlayBoard2 = [
+    [null, null, null],
+    [null, null, null],
+    [null, null, null],
+];
+
+let testPlayBoard3 = [
+    ['X', 'X', 'X'],
+    ['X', 'O', 'O'],
+    ['O', 'O', 'O'],
+];
+// playUntilWin(testPlayBoard, 'X');
+
+console.log(fullBoard(testPlayBoard));
+console.log(fullBoard(testPlayBoard2));
+console.log(fullBoard(testPlayBoard3));
