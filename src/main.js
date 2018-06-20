@@ -1,10 +1,3 @@
-let board = 
-    [
-        [null, null, null],
-        [null, null, null],
-        [null, null, null],
-    ];
-
 function returnWinner(board){
     let rows = board.length;
     let cols = board[0].length;
@@ -32,7 +25,7 @@ function returnWinner(board){
     return null;
 }
 
-function fullBoard(board){
+function isFullBoard(board){
     let nullCount = 0;
     for(let i = 0; i < board.length; i++){
         for(let j = 0; j < board.length; j++){
@@ -47,43 +40,6 @@ function fullBoard(board){
     return true;
 }
 
-let board1 = [
-    ['X', 'X', 'X'],
-    ['null', 'O', 'O'],
-    ['O', null, null],
-];
-
-// console.log('X', returnWinner(board1));
-
-let board2 = [
-    ['X', 'X', 'O'],
-    ['null', 'X', 'O'],
-    ['O', null, 'X'],
-];
-
-// console.log('X', returnWinner(board2));
-
-let board3 = [
-    ['O', 'X', 'O'],
-    ['O', 'X', 'O'],
-    ['O', null, 'X'],
-];
-
-// console.log('O', returnWinner(board3));
-
-let board4 = [
-    ['null', 'X', 'O'],
-    ['null', 'X', 'O'],
-    ['O', null, 'X'],
-];
-
-// console.log(null, returnWinner(board4));
-
-let board5 = [
-    ['null', 'X', 'O'],
-    ['null', 'X', 'O'],
-    ['', null, 'X'],
-];
 
 function makeRandomMove(board, player){
     let rows = board.length;
@@ -97,11 +53,6 @@ function makeRandomMove(board, player){
     return [randomRow, randomCol];
 }
 
-// console.log(makeRandomMove(board, 'X'));
-
-// function chooseNextMove(player, board){
-
-// }
 
 function playUntilWin(board, startPlayer){
     // TODO: Need to account for tie
@@ -125,25 +76,4 @@ function scoreBoard(player, board){
 }
 
 
-let testPlayBoard = [
-    ['X', null, 'O'],
-    [null, null, null],
-    ['O', null, null],
-];
 
-let testPlayBoard2 = [
-    [null, null, null],
-    [null, null, null],
-    [null, null, null],
-];
-
-let testPlayBoard3 = [
-    ['X', 'X', 'X'],
-    ['X', 'O', 'O'],
-    ['O', 'O', 'O'],
-];
-// playUntilWin(testPlayBoard, 'X');
-
-console.log(fullBoard(testPlayBoard));
-console.log(fullBoard(testPlayBoard2));
-console.log(fullBoard(testPlayBoard3));
