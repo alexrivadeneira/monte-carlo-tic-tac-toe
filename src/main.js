@@ -2,7 +2,6 @@ function returnWinner(board){
     let rows = board.length;
     let cols = board[0].length;
 
-    // check each row
     for(let i = 0; i < rows; i++){
         if(board[i][0] === board[i][1] && board[i][0] === board[i][2]){
             return board[i][0];
@@ -43,7 +42,9 @@ function isFullBoard(board){
 }
 
 function getEmptySquares(board){
+
     let emptySquares = [];
+
     for(let i = 0; i < board.length; i++){
         for(let j = 0; j < board[0].length; j++){
             if(board[i][j] === null){
@@ -51,13 +52,12 @@ function getEmptySquares(board){
             }
         }
     }
+
     return emptySquares;
 }
 
-
 function generateRandomMove(board){
     let emptySquares = getEmptySquares(board);
-    // console.log(emptySquares.length);
 
     if(emptySquares.length === 0){
         return null;
@@ -66,12 +66,8 @@ function generateRandomMove(board){
 }
 
 function makeMove(board, player, row, col){
-    // console.log(JSON.stringify(board));
-    // console.log('Moving ', player, ' to ', row, col);
     board[row][col] = player;
-
 }
-
 
 function playUntilWin(board, startPlayer){
     
@@ -97,8 +93,6 @@ function scoreBoard(board, player){
 
     let emptySquares = getEmptySquares(board);
 
-    // console.log('empty squares: ', emptySquares);
-
     emptySquares.forEach(function(space){
         let boardCopy = deepCopyBoard(board);
 
@@ -111,19 +105,11 @@ function scoreBoard(board, player){
             scoredBoard[space[0]][space[1]] += scoreConverter[result];
             // console.log('simulation winner:', result);
         }       
-
     });
+
     return scoredBoard;
 
-
 }
-
-let testingBoard = [
-    ['O', null, 'O'],
-    [null, null, 'O'],
-    [null, null, 'X'],
-];
-
 
 function deepCopyBoard(board){
     let boardCopy = [];
@@ -136,22 +122,3 @@ function deepCopyBoard(board){
 
 let scoredBoard = scoreBoard(testingBoard, 'X');
 console.log(scoredBoard);
-
-// playUntilWin(board, 'X');
-
-// console.log('>>>', testingBoard);
-
-
-
-    // var result = playUntilWin(deepCopyBoard(testingBoard), 'X');
-    // console.log('>>>', testingBoard);
-
-    // var result2 = playUntilWin(deepCopyBoard(testingBoard), 'X');
-    // console.log('>>>', testingBoard);
-
-    // var result3 = playUntilWin(deepCopyBoard(testingBoard), 'X');
-    // console.log('>>>', testingBoard);
-
-    // console.log('simulation winner:', result, result2, result3);
-
-// console.log('>>>', playUntilWin(board, 'X'));
