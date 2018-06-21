@@ -65,7 +65,8 @@ function generateRandomMove(board){
 }
 
 function makeMove(board, player, row, col){
-    console.log('Moving ', player, ' to ', row, col);
+    // console.log(JSON.stringify(board));
+    // console.log('Moving ', player, ' to ', row, col);
     board[row][col] = player;
 
 }
@@ -73,29 +74,55 @@ function makeMove(board, player, row, col){
 
 function playUntilWin(board, startPlayer){
     
-    while(returnWinner(board) === null){
-        console.log(board);
-        let randomMove = generateRandomMove(board);
-        makeMove(board, startPlayer, randomMove[0], randomMove[1]);
+    let boardCopy = board.slice("");
+
+    while(returnWinner(boardCopy) === null){
+        console.log(boardCopy);
+        let randomMove = generateRandomMove(boardCopy);
+        makeMove(boardCopy, startPlayer, randomMove[0], randomMove[1]);
         startPlayer === 'X' ? startPlayer = 'O' : startPlayer = 'X';
     }
-    console.log('WINNER: ', returnWinner(board));
+
+    return returnWinner(boardCopy);
 }
 
-function scoreBoard(player, board){
+function scoreBoard(board, player){
     let scoredBoard = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-    // for each null area on the board, play some random games until the game is over
-    // for each game that results in a win for the player, add 1 to the scored section
-    // for each game that results in a lose for the player, add -1 to the square
+
+    let opponent;
+    player === 'X' ? opponent = 'O' : opponent = 'X';
+
+    let scoreConverter = {
+        player: 1,
+        opponent: -1,
+        tie: 0,
+    };
+
+    let emptySquares = getEmptySquares(board);
+    console.log('empty squares: ', emptySquares);
+
+    let boardCopy = board.slice("");
+    emptySquares.forEach(function(space){
+        let newBoard = boardCopy.slice("");
+        console.log('>>>>>', JSON.stringify(newBoard));
+        makeMove(newBoard, player, space[0], space[1]);
+        for(let k = 0; k < 3; k++){
+            let result = playUntilWin(newBoard, player);
+            console.log('>>>', result);
+        }       
+    });
+
+
+
 }
 
-let playBoard = [
-    [null, null, null],
-    [null, null, null],
-    [null, null, null],
+let board = [
+    [null, null, 'O'],
+    [null, null, 'X'],
+    [null, 'X', 'O'],
 ];
 
-playUntilWin(playBoard, 'X');
+console.log(scoreBoard(board, 'O'));
 
 
 
