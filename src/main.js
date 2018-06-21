@@ -4,8 +4,6 @@ function returnWinner(board){
 
     // check each row
     for(let i = 0; i < rows; i++){
-        // console.log('running');
-        // console.log('got here', board[i][0], board[i][1], board[i][2]);
         if(board[i][0] === board[i][1] && board[i][0] === board[i][2]){
             return board[i][0];
         }
@@ -59,7 +57,6 @@ function getEmptySquares(board){
 
 function generateRandomMove(board){
     let emptySquares = getEmptySquares(board);
-    console.log('emptySquares', emptySquares);
 
     if(emptySquares.length === 0){
         return null;
@@ -68,21 +65,19 @@ function generateRandomMove(board){
 }
 
 function makeMove(board, player, row, col){
+    console.log('Moving ', player, ' to ', row, col);
     board[row][col] = player;
+
 }
 
 
 function playUntilWin(board, startPlayer){
-    // TODO: Need to account for tie
+    
     while(returnWinner(board) === null){
+        console.log(board);
         let randomMove = generateRandomMove(board);
         makeMove(board, startPlayer, randomMove[0], randomMove[1]);
-        if(startPlayer === 'X'){
-            startPlayer = 'O';
-        } else {
-            startPlayer = 'X';
-        }
-        console.log('currBoard: ', board);
+        startPlayer === 'X' ? startPlayer = 'O' : startPlayer = 'X';
     }
     console.log('WINNER: ', returnWinner(board));
 }
@@ -94,13 +89,13 @@ function scoreBoard(player, board){
     // for each game that results in a lose for the player, add -1 to the square
 }
 
-let board = [
+let playBoard = [
     [null, null, null],
     [null, null, null],
     [null, null, null],
 ];
 
-// playUntilWin(board, 'X');
+playUntilWin(playBoard, 'X');
 
 
 
