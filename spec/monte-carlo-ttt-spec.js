@@ -116,6 +116,32 @@ describe("isFullBoard", function(){
 
 
 
+describe("occupiedSquares", function(){
+	it("should return occupied squares", function(){
+		let board = [
+			['X', null, null],
+			[null, 'O', null],
+			[null, 'X', 'X'],
+		];
+		let occupiedSquares = [[0,0],[1,1],[2,1],[2,2]];
+		
+		expect(getOccupiedSquares(board)).toEqual(occupiedSquares);
+	});
+
+	it("should return occupied squares", function(){
+		let board = [
+			[null, null, null],
+			[null, null, null],
+			[null, null, null],
+		];
+		let occupiedSquares = [];
+		
+		expect(getOccupiedSquares(board)).toEqual(occupiedSquares);
+	});
+	
+});
+
+
 describe("getEmptySquares", function(){
 	it("should return the correct empty squares", function(){
 		let board = [
@@ -258,4 +284,23 @@ describe("scoreBoard", function(){
 		expect(scoredBoard[2][0] >= scoredBoard[0][2]).toBeTruthy();
 	});
 
+});
+
+
+describe("getBestScoredPosition", function(){
+	it("return the position with the highest score", function(){
+		let scoredBoard = 
+			[
+				[null, 0, -10], 
+				[0, 15, 0], 
+				[-11, null, null],
+			];
+
+		let highestScoredPosition = [1,1];
+		
+		expect(getBestScoredPosition(scoredBoard)).toEqual(highestScoredPosition);
+	});
+
+
+	
 });

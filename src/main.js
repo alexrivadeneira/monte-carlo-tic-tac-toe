@@ -1,4 +1,4 @@
-const GAME_SIMULATIONS = 20;
+const GAME_SIMULATIONS = 5;
 const boardDiv = document.getElementById('board');
 let humanPlayer = 'X';
 let computerPlayer = 'O';
@@ -14,7 +14,7 @@ boardDiv.addEventListener('click', function(event){
         drawBoard(board);
         humanTurn = false;
 
-        computerMove();
+        setTimeout(computerMove, 500);
  
     }
 
@@ -27,8 +27,54 @@ let board = [
             ];
 
 function computerMove(){
+
+
+    let emptySquares = getEmptySquares(board);
+
+    console.log(emptySquares);
+
+    if(emptySquares.length === 0){
+        console.log('got here');
+        return;
+    } else if(emptySquares.length === 1){
+        console.log('one empty sq');
+        makeMove(board, computerPlayer, emptySquares[0][0], emptySquares[0][1]);
+        drawBoard(board);
+        return;
+    }
+
+    let bestScore = Number.MIN_VALUE;
+
     let scoredBoard = scoreBoard(board, computerPlayer);
-    console.log(scoredBoard);
+    console.log('scoredBoard: ', scoredBoard);
+
+    let nextMove = getBestScoredPosition(scoredBoard);
+    let nextRow = nextMove[0];
+    let nextCol = nextMove[1];
+
+    console.log(nextMove);
+    makeMove(board, computerPlayer, nextRow, nextCol);
+    drawBoard(board);
+    humanTurn = true;
+
+}
+
+function getBestScoredPosition(scoredBoard){
+    let topScore = Number.MIN_VALUE;
+    let nextMove = [];
+
+    for(let i = 0; i < scoredBoard.length; i++){
+        for(let j = 0; j < scoredBoard[0].length; j++){
+
+            
+            if(scoredBoard[i][j] !== null && scoredBoard[i][j] > topScore){
+                topScore = scoredBoard[i][j];
+                nextMove = [i,j];
+            }
+        }
+    }
+    console.log('>>>nextmove', nextMove);
+    return nextMove;
 }
 
 function returnWinner(board){
@@ -74,6 +120,7 @@ function isFullBoard(board){
     return true;
 }
 
+
 function getEmptySquares(board){
 
     let emptySquares = [];
@@ -114,6 +161,7 @@ function playUntilWin(board, startPlayer){
 }
 
 function scoreBoard(board, player){
+    console.log('board passed to scoreboard: ', board);
     let scoredBoard = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 
     let opponent;
@@ -136,8 +184,27 @@ function scoreBoard(board, player){
             scoredBoard[space[0]][space[1]] += scoreConverter[result];
         }       
     });
+
+    let occupiedSquares = getOccupiedSquares(board);
+
+    occupiedSquares.forEach(function(square){
+        scoredBoard[square[0]][square[1]] = null;
+    });
+
     return scoredBoard;
 
+}
+
+function getOccupiedSquares(board){
+    let occupiedSquares = [];
+    for(let i = 0; i < board.length; i++){
+        for(let j = 0; j < board[0].length; j++){
+            if(board[i][j] !== null){
+                occupiedSquares.push([i,j]);
+            }
+        }
+    }
+    return occupiedSquares;
 }
 
 function deepCopyBoard(board){
