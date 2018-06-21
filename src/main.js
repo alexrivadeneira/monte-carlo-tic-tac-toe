@@ -1,3 +1,5 @@
+const GAME_SIMULATIONS = 5;
+
 function returnWinner(board){
     let rows = board.length;
     let cols = board[0].length;
@@ -97,16 +99,12 @@ function scoreBoard(board, player){
         let boardCopy = deepCopyBoard(board);
 
         makeMove(boardCopy, player, space[0], space[1]);
-        for(let k = 0; k < 15; k++){
+        for(let k = 0; k < GAME_SIMULATIONS; k++){
             let currSimulationBoardCopy = deepCopyBoard(boardCopy);
             let result = playUntilWin(currSimulationBoardCopy, opponent);
-
-            console.log(scoreConverter[result], result);
             scoredBoard[space[0]][space[1]] += scoreConverter[result];
-            // console.log('simulation winner:', result);
         }       
     });
-
     return scoredBoard;
 
 }
@@ -120,5 +118,5 @@ function deepCopyBoard(board){
 }
 
 
-let scoredBoard = scoreBoard(testingBoard, 'X');
-console.log(scoredBoard);
+// let scoredBoard = scoreBoard(testingBoard, 'X');
+// console.log(scoredBoard);

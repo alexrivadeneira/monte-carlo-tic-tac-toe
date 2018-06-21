@@ -231,3 +231,31 @@ describe("generateRandomMove", function(){
 	});		
 
 });
+
+describe("scoreBoard", function(){
+
+	it("should generally prioritize the middle square", function(){
+		let board = [
+			[null, null, null],
+			[null, null, null],
+			[null, null, null],
+		];
+
+		let scoredBoard = scoreBoard(board, 'X');
+	
+		expect(scoredBoard[1][1] >= scoredBoard[0][0] || scoredBoard[1][1] >= scoredBoard[2][2]).toBeTruthy();
+	});
+
+	it("should pick an obviously good square", function(){
+		let board = [
+			['X', 'O', null],
+			['X', 'O', null],
+			[null, null, 'O'],
+		];
+
+		let scoredBoard = scoreBoard(board, 'X');
+	
+		expect(scoredBoard[2][0] >= scoredBoard[0][2]).toBeTruthy();
+	});
+
+});
