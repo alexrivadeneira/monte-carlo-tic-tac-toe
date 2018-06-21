@@ -121,9 +121,12 @@ function scoreBoard(board, player){
 
 let testingBoard = [
     [null, null, 'O'],
-    [null, 'O', 'O'],
-    [null, 'X', 'X'],
+    [null, null, 'O'],
+    [null, null, 'X'],
 ];
+
+
+
 
 function deepCopyBoard(board){
     let boardCopy = [];
