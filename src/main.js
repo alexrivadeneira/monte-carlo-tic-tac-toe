@@ -1,4 +1,10 @@
-const GAME_SIMULATIONS = 5;
+const GAME_SIMULATIONS = 20;
+
+let board = [
+                ['X', null, null],
+                [null, null, null],
+                [null, 'O', null],
+            ];
 
 function returnWinner(board){
     let rows = board.length;
@@ -105,6 +111,7 @@ function scoreBoard(board, player){
             scoredBoard[space[0]][space[1]] += scoreConverter[result];
         }       
     });
+    console.log(scoredBoard);
     return scoredBoard;
 
 }
@@ -117,6 +124,25 @@ function deepCopyBoard(board){
     return boardCopy;
 }
 
+function drawBoard(board){
+    let boardDiv = document.getElementById('board');
 
-// let scoredBoard = scoreBoard(testingBoard, 'X');
-// console.log(scoredBoard);
+    console.log('trying to get board', boardDiv);
+    
+    for(let i = 0; i < board.length; i++){
+        for(let j = 0; j < board[0].length; j++){
+            let square = document.createElement('div');
+            square.classList.add('square');
+            if(board[i][j] !== null){
+                let squareFill = document.createTextNode(`${board[i][j]}`);
+                square.appendChild(squareFill);
+            }
+            square.setAttribute('row', i);
+            square.setAttribute('col', j);
+            boardDiv.appendChild(square);
+        }
+    }
+}
+
+drawBoard(board);
+
