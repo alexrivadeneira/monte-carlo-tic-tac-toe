@@ -1,10 +1,35 @@
 const GAME_SIMULATIONS = 20;
+const boardDiv = document.getElementById('board');
+let humanPlayer = 'X';
+let computerPlayer = 'O';
+let humanTurn = true;
+
+boardDiv.addEventListener('click', function(event){
+
+    if(humanTurn){
+        let row = event.target.getAttribute('row');
+        let col = event.target.getAttribute('col');
+
+        makeMove(board, humanPlayer, row, col);
+        drawBoard(board);
+        humanTurn = false;
+
+        computerMove();
+ 
+    }
+
+});
 
 let board = [
-                ['X', null, null],
                 [null, null, null],
-                [null, 'O', null],
+                [null, null, null],
+                [null, null, null],
             ];
+
+function computerMove(){
+    let scoredBoard = scoreBoard(board, computerPlayer);
+    console.log(scoredBoard);
+}
 
 function returnWinner(board){
     let rows = board.length;
@@ -111,7 +136,6 @@ function scoreBoard(board, player){
             scoredBoard[space[0]][space[1]] += scoreConverter[result];
         }       
     });
-    console.log(scoredBoard);
     return scoredBoard;
 
 }
@@ -124,10 +148,16 @@ function deepCopyBoard(board){
     return boardCopy;
 }
 
-function drawBoard(board){
-    let boardDiv = document.getElementById('board');
+function getClearedBoardDiv(){
+    while(boardDiv.firstChild){
+        boardDiv.removeChild(boardDiv.firstChild);
+    }
+    return boardDiv;
+};
 
-    console.log('trying to get board', boardDiv);
+function drawBoard(board){
+
+    let clearedBoardDiv = getClearedBoardDiv();
     
     for(let i = 0; i < board.length; i++){
         for(let j = 0; j < board[0].length; j++){
@@ -139,10 +169,12 @@ function drawBoard(board){
             }
             square.setAttribute('row', i);
             square.setAttribute('col', j);
-            boardDiv.appendChild(square);
+            clearedBoardDiv.appendChild(square);
         }
     }
 }
+
+
 
 drawBoard(board);
 
