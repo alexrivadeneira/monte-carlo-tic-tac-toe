@@ -254,7 +254,10 @@ function drawBoard(board){
     }
 }
 
-function drawBoardWithHints(board, goodChoice, badChoice){
+function drawColorCodedBoard(board, scoredBoard, maxVal){
+
+    console.log(scoredBoard);
+    console.log('running');
     let clearedBoardDiv = getClearedBoardDiv();
     
     for(let i = 0; i < board.length; i++){
@@ -264,59 +267,59 @@ function drawBoardWithHints(board, goodChoice, badChoice){
             if(board[i][j] !== null){
                 let squareFill = document.createTextNode(`${board[i][j]}`);
                 square.appendChild(squareFill);
+                
+
             }
+
+            console.log('scordd board: ', scoredBoard[i][j]);
+            if(scoredBoard[i][j] < 0){
+                console.log('got here - neg');
+                let colorStyle = 'rgba(244,66,66,';
+                let opacity = parseFloat(Math.abs(scoredBoard[i][j]) / maxVal);
+            
+                colorStyle += opacity;
+                colorStyle += ')';
+                console.log(colorStyle);
+                square.style.background = colorStyle;
+            }
+
+            if(scoredBoard[i][j] >= 0){
+                console.log('got here  - pos');
+
+                let colorStyle = 'rgba(77,255,61,';
+                let opacity = parseFloat(Math.abs(scoredBoard[i][j]) / maxVal);
+                colorStyle += opacity;
+                colorStyle += ')';
+                console.log(colorStyle);
+
+                square.style.background = colorStyle;
+            }
+
             square.setAttribute('row', i);
             square.setAttribute('col', j);
-
-            if(i === goodChoice[0] && j === goodChoice[1]){
-                square.classList.add('good-choice');
-            }
-
-            if(i === badChoice[0] && j === badChoice[1]){
-                square.classList.add('bad-choice');
-            }
-
             clearedBoardDiv.appendChild(square);
         }
-    }    
+    }
 }
+
 
 
 function colorCodeHelpPlayer(){
     let scoredBoard = scoreBoard(board, humanPlayer);
+    let minVals = [];
+    let maxVals = [];
+    scoredBoard.forEach(function(array){
+        minVals.push(Math.min.apply(null, array));
+        maxVals.push(Math.max.apply(null, array));
+    });
 
-    let maxVal = 0;
-    let minVal = 0;
-    let badChoice, goodChoice;
+    let maxVal = Math.max.apply(null, maxVals);
+    let minVal = Math.min.apply(null, minVals);
 
-    for(let i = 0; i < scoredBoard.length; i++){
-        for(let j = 0; j < scoredBoard[0].length; j++){
-            if(scoredBoard[i][j] !== null){
-                maxVal = scoredBoard[i][j];
-                minVal = scoredBoard[i][j];
-                goodChoice = [i,j];
-                badChoice = [i,j];
-                break;
-            }
-        }
-    }
+    console.log(maxVal, minVal);
+      
 
-
-    for(let i = 0; i < scoredBoard.length; i++){
-        for(let j = 0; j < scoredBoard[0].length; j++){
-            if(scoredBoard[i][j] < minVal){
-                minVal = scoredBoard[i][j];
-                badChoice = [i,j];
-            }
-            if(scoredBoard[i][j] > maxVal){
-                maxVal = scoredBoard[i][j];
-                goodChoice = [i,j];
-            }
-        }
-    }
-
-    drawBoardWithHints(board, goodChoice, badChoice);
-    
+    drawColorCodedBoard(board, scoredBoard, maxVal);    
 }
 
 
