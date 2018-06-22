@@ -3,8 +3,14 @@ const boardDiv = document.getElementById('board');
 let humanPlayer = 'X';
 let computerPlayer = 'O';
 let humanTurn = true;
+let gameOver = false;
 
 boardDiv.addEventListener('click', function(event){
+
+    if(gameOver){
+        console.log('ending game');
+        return;
+    }
 
     if(humanTurn){
         let row = event.target.getAttribute('row');
@@ -14,6 +20,9 @@ boardDiv.addEventListener('click', function(event){
         drawBoard(board);
         humanTurn = false;
 
+        if(returnWinner(board) !== null){
+            gameOver = true;
+        }
         setTimeout(computerMove, 500);
 
     }
@@ -28,16 +37,16 @@ let board = [
 
 function computerMove(){
 
+    if(gameOver){
+        return;
+    }
 
     let emptySquares = getEmptySquares(board);
 
-    console.log(emptySquares);
 
     if(emptySquares.length === 0){
-        console.log('got here');
         return;
     } else if(emptySquares.length === 1){
-        console.log('one empty sq');
         makeMove(board, computerPlayer, emptySquares[0][0], emptySquares[0][1]);
         drawBoard(board);
         return;
@@ -45,13 +54,16 @@ function computerMove(){
 
 
     let scoredBoard = scoreBoard(board, computerPlayer);
-    console.log('scoredBoard: ', scoredBoard);
 
     let nextMove = getBestScoredPosition(scoredBoard);
-    console.log('next move: ', nextMove);
     
     makeMove(board, computerPlayer, nextMove[0], nextMove[1]);
     drawBoard(board);
+
+    if(returnWinner(board) !== null){
+        gameOver = true;
+    }
+    
     humanTurn = true;
 
 }
@@ -80,22 +92,31 @@ function returnWinner(board){
 
     for(let i = 0; i < rows; i++){
         if(board[i][0] === board[i][1] && board[i][0] === board[i][2]){
+            console.log('win - row')
             return board[i][0];
         }
         else if(board[0][i] === board[1][i] && board[0][i] === board[2][i]){
+            console.log('win - row')
+
             return board[0][i];
         }   
     }
 
     if(board[0][0] === board[1][1] && board[0][0] === board[2][2]){
+        console.log('win - col')
+
         return board[0][0];
     }
 
     if(board[0][2] === board[1][1] && board[0][2] === board[2][0]){
+        console.log('win - col')
+
         return board[0][2];
     }
 
     if(isFullBoard(board)){
+        console.log('tie game')
+
         return 'tie';
     }
     
@@ -158,7 +179,6 @@ function playUntilWin(board, startPlayer){
 }
 
 function scoreBoard(board, player){
-    console.log('board passed to scoreboard: ', board);
     let scoredBoard = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 
     let opponent;
