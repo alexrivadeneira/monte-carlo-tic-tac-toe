@@ -301,6 +301,17 @@ describe("getBestScoredPosition", function(){
 		expect(getBestScoredPosition(scoredBoard)).toEqual(highestScoredPosition);
 	});
 
+	it("return the position with the highest score", function(){
+		let scoredBoard = 
+			[
+				[-25, null, null], 
+				[null, null, null], 
+				[0, null, null],
+			];
 
+		let highestScoredPosition = [2,0];
+		
+		expect(getBestScoredPosition(scoredBoard)).toEqual(highestScoredPosition);
+	});
 	
 });

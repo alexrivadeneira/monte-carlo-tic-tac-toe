@@ -1,4 +1,4 @@
-const GAME_SIMULATIONS = 5;
+const GAME_SIMULATIONS = 65;
 const boardDiv = document.getElementById('board');
 let humanPlayer = 'X';
 let computerPlayer = 'O';
@@ -15,7 +15,7 @@ boardDiv.addEventListener('click', function(event){
         humanTurn = false;
 
         setTimeout(computerMove, 500);
- 
+
     }
 
 });
@@ -43,24 +43,21 @@ function computerMove(){
         return;
     }
 
-    let bestScore = Number.MIN_VALUE;
 
     let scoredBoard = scoreBoard(board, computerPlayer);
     console.log('scoredBoard: ', scoredBoard);
 
     let nextMove = getBestScoredPosition(scoredBoard);
-    let nextRow = nextMove[0];
-    let nextCol = nextMove[1];
-
-    console.log(nextMove);
-    makeMove(board, computerPlayer, nextRow, nextCol);
+    console.log('next move: ', nextMove);
+    
+    makeMove(board, computerPlayer, nextMove[0], nextMove[1]);
     drawBoard(board);
     humanTurn = true;
 
 }
 
 function getBestScoredPosition(scoredBoard){
-    let topScore = Number.MIN_VALUE;
+    let topScore = -9999;
     let nextMove = [];
 
     for(let i = 0; i < scoredBoard.length; i++){
@@ -73,7 +70,7 @@ function getBestScoredPosition(scoredBoard){
             }
         }
     }
-    console.log('>>>nextmove', nextMove);
+
     return nextMove;
 }
 
