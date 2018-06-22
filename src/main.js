@@ -1,5 +1,7 @@
 const GAME_SIMULATIONS = 65;
 const boardDiv = document.getElementById('board');
+const hintsDiv = document.getElementById('hints');
+
 let humanPlayer = 'X';
 let computerPlayer = 'O';
 let humanTurn = true;
@@ -8,7 +10,6 @@ let gameOver = false;
 boardDiv.addEventListener('click', function(event){
 
     if(gameOver){
-        console.log('ending game');
         return;
     }
 
@@ -27,6 +28,10 @@ boardDiv.addEventListener('click', function(event){
 
     }
 
+});
+
+hintsDiv.addEventListener('mouseover', function(event){
+    colorCodeHelpPlayer(board);
 });
 
 let board = [
@@ -63,7 +68,7 @@ function computerMove(){
     if(returnWinner(board) !== null){
         gameOver = true;
     }
-    
+
     humanTurn = true;
 
 }
@@ -92,31 +97,22 @@ function returnWinner(board){
 
     for(let i = 0; i < rows; i++){
         if(board[i][0] === board[i][1] && board[i][0] === board[i][2]){
-            console.log('win - row')
             return board[i][0];
         }
         else if(board[0][i] === board[1][i] && board[0][i] === board[2][i]){
-            console.log('win - row')
-
             return board[0][i];
         }   
     }
 
     if(board[0][0] === board[1][1] && board[0][0] === board[2][2]){
-        console.log('win - col')
-
         return board[0][0];
     }
 
     if(board[0][2] === board[1][1] && board[0][2] === board[2][0]){
-        console.log('win - col')
-
         return board[0][2];
     }
 
     if(isFullBoard(board)){
-        console.log('tie game')
-
         return 'tie';
     }
     
@@ -257,6 +253,72 @@ function drawBoard(board){
         }
     }
 }
+
+function drawBoardWithHints(board, goodChoice, badChoice){
+    let clearedBoardDiv = getClearedBoardDiv();
+    
+    for(let i = 0; i < board.length; i++){
+        for(let j = 0; j < board[0].length; j++){
+            let square = document.createElement('div');
+            square.classList.add('square');
+            if(board[i][j] !== null){
+                let squareFill = document.createTextNode(`${board[i][j]}`);
+                square.appendChild(squareFill);
+            }
+            square.setAttribute('row', i);
+            square.setAttribute('col', j);
+
+            if(i === goodChoice[0] && j === goodChoice[1]){
+                square.classList.add('good-choice');
+            }
+
+            if(i === badChoice[0] && j === badChoice[1]){
+                square.classList.add('bad-choice');
+            }
+
+            clearedBoardDiv.appendChild(square);
+        }
+    }    
+}
+
+
+function colorCodeHelpPlayer(){
+    let scoredBoard = scoreBoard(board, humanPlayer);
+
+    let maxVal = 0;
+    let minVal = 0;
+    let badChoice, goodChoice;
+
+    for(let i = 0; i < scoredBoard.length; i++){
+        for(let j = 0; j < scoredBoard[0].length; j++){
+            if(scoredBoard[i][j] !== null){
+                maxVal = scoredBoard[i][j];
+                minVal = scoredBoard[i][j];
+                goodChoice = [i,j];
+                badChoice = [i,j];
+                break;
+            }
+        }
+    }
+
+
+    for(let i = 0; i < scoredBoard.length; i++){
+        for(let j = 0; j < scoredBoard[0].length; j++){
+            if(scoredBoard[i][j] < minVal){
+                minVal = scoredBoard[i][j];
+                badChoice = [i,j];
+            }
+            if(scoredBoard[i][j] > maxVal){
+                maxVal = scoredBoard[i][j];
+                goodChoice = [i,j];
+            }
+        }
+    }
+
+    drawBoardWithHints(board, goodChoice, badChoice);
+    
+}
+
 
 
 
